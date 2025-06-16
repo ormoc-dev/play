@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Audio Player</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main>
+      <div class="container">
+        <div class="player-card">
+          <h1>LETS PLAY LOSER!</h1>
+          <section class="player-section">
+            <div class="input-group">
+              <label for="text">Type "PLAY" to continue</label>
+              <input
+                type="text"
+                class="play-input"
+                placeholder="Type here..."
+              />
+            </div>
+            <div class="volume-group">
+              <label for="range">Adjust Volume</label>
+              <div class="volume-control">
+                <input
+                  type="range"
+                  class="range"
+                  min="0"
+                  max="100"
+                  value="50"
+                />
+                <span class="volume-value">50%</span>
+              </div>
+            </div>
+            <button class="next-btn">Next</button>
+            <audio
+              id="audioPlayer"
+              src="./hehe/amen.mp3"
+            ></audio>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="volumeModal">
+      <div class="modal-content">
+        <h2>Volume Too Low</h2>
+        <p>You need at least 96% volume for better quality sound.</p>
+        <button class="modal-close">Got it</button>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
