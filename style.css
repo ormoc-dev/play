@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 :root {
@@ -15,22 +16,25 @@
     --border: #e2e8f0;
 }
 
-html, body {
-    min-height: 100vh;
+html {
+    height: 100%;
     width: 100%;
     overflow: hidden;
     position: fixed;
 }
 
 body {
+    min-height: 100vh;
+    width: 100%;
     font-family: 'Inter', sans-serif;
     color: var(--text);
     position: relative;
     overflow-x: hidden;
-    -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
+    overscroll-behavior: none;
+    touch-action: manipulation;
 }
 
 /* Animated Background */

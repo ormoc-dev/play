@@ -10,10 +10,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalClose = document.querySelector('.modal-close');
     let wakeLock = null;
 
-    // Request fullscreen when the page loads
-    document.documentElement.requestFullscreen().catch(err => {
-        console.log(`Error attempting to enable fullscreen: ${err.message}`);
-    });
+    // Function to request fullscreen
+    function requestFullScreen() {
+        const element = document.documentElement;
+        
+        if (element.requestFullscreen) {
+            element.requestFullscreen();
+        } else if (element.webkitRequestFullscreen) { // Safari
+            element.webkitRequestFullscreen();
+        } else if (element.mozRequestFullScreen) { // Firefox
+            element.mozRequestFullScreen();
+        } else if (element.msRequestFullscreen) { // IE11
+            element.msRequestFullscreen();
+        }
+    }
+
+    // Request fullscreen when user interacts with the page
+    document.addEventListener('click', () => {
+        requestFullScreen();
+    }, { once: true });
+
+    // Also try to request fullscreen on load
+    requestFullScreen();
 
     // Request wake lock when audio starts playing
     async function requestWakeLock() {
