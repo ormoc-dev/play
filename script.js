@@ -8,6 +8,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const volumeValue = document.querySelector('.volume-value');
     const modal = document.getElementById('volumeModal');
     const modalClose = document.querySelector('.modal-close');
+    let wakeLock = null;
+
+    // Request fullscreen when the page loads
+    document.documentElement.requestFullscreen().catch(err => {
+        console.log(`Error attempting to enable fullscreen: ${err.message}`);
+    });
+
+    // Request wake lock when audio starts playing
+    async function requestWakeLock() {
+        try {
+            wakeLock = await navigator.wakeLock.request('screen');
+            console.log('Wake Lock is active');
+        } catch (err) {
+            console.log(`${err.name}, ${err.message}`);
+        }
+    }
+
+    // Release wake lock when audio ends
+    function releaseWakeLock() {
+        if (wakeLock !== null) {
+            wakeLock.release()
+                .then(() => {
+                    wakeLock = null;
+                    console.log('Wake Lock released');
+                });
+        }
+    }
 
     let isVolumeStep = false;
 
@@ -47,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.textContent = 'Playing...';
         nextBtn.disabled = true;
         volumeValue.classList.add('playing');
+        requestWakeLock(); // Request wake lock when audio starts
     }
 
     function resetPlayer() {
@@ -62,6 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         volumeValue.textContent = '50%';
         volumeValue.classList.remove('playing', 'ready-to-play');
         nextBtn.classList.remove('ready-to-play');
+        releaseWakeLock(); // Release wake lock when audio ends
     }
 
     textInput.addEventListener('input', (e) => {
@@ -113,6 +142,14 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             hideModal();
+        }
+    });
+
+    // Handle visibility change
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden' && !audioPlayer.paused) {
+            // Keep audio playing when screen is off
+            audioPlayer.play();
         }
     });
 });
